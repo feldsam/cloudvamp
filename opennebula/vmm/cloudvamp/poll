@@ -3,14 +3,14 @@
 # -------------------------------------------------------------------------- #
 #                                                                            #
 # This is a modified version of the poll file from OpenNebula KVM VMM,       #
-# version 4.14. This file include modifications to adapt it to CloudVAMP.     #
+# version 4.14. This file include modifications to adapt it to CloudVAMP.    #
 # Modifications are concentrated in function get_all_vm_info although other  #
 # parts may also have been modified.                                         #
 #                                                                            #
 # -------------------------------------------------------------------------- #
 
 # -------------------------------------------------------------------------- #
-# Original file
+# Original file                                                              #
 # Copyright 2002-2015, OpenNebula Project, OpenNebula Systems                #
 #                                                                            #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may    #

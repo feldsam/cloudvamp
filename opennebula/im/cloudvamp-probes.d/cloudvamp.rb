@@ -3,14 +3,14 @@
 # -------------------------------------------------------------------------- #
 #                                                                            #
 # This is a modified version of the kvm.rb file from OpenNebula KVM IM,      #
-# version 4.14. This file include modifications to adapt it to CloudVAMP.     #
+# version 4.14. This file include modifications to adapt it to CloudVAMP.    #
 # Modifications are concentrated in the first part of the code, although     #
 # other parts may also have been modified.                                   #
 #                                                                            #
 # -------------------------------------------------------------------------- #
 
 # -------------------------------------------------------------------------- #
-# Original file
+# Original file                                                              #
 # Copyright 2002-2015, OpenNebula Project, OpenNebula Systems                #
 #                                                                            #
 # CloudVAMP modifications                                                    #
