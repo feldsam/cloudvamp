@@ -52,7 +52,7 @@ vmsinfo_text.split(/\n/).each{|line|
 			var, val = varval.split("=")
 			if var == 'MAXMEMORY' 
 				maxmemory = val.to_f
-			elsif var == 'USEDMEMORY'
+			elsif var == 'MEMORY'
 				usedmemory = val.to_f
 			end	
 		}
