@@ -46,7 +46,7 @@ class Config:
 	# Difference between the amount of the current memory of the VM and the new one to be set to perform the operation (in KB)     
 	MEM_DIFF_TO_CHANGE = 1024
 	# The Memory Overprovisioning Percentage
-	MEM_OVER = 20.0
+	MEM_OVER = 30.0
 	# The Memory Overprovisioning Percentage margin
 	MEM_MARGIN = 5
 	# Cooldown Time (in secs)
@@ -55,7 +55,7 @@ class Config:
 	DELAY = 5
 	# Cooldown migration time (in secs)
 	MIGRATION_COOLDOWN = 45
-	# Magen de memoria (en KB) que le damos al host para mirar las VMs
+	# Host memory margin (in KB) to migrate VM to another host
 	HOST_MEM_MARGIN = 102400
 	# Maximum number of threads to launch in the monitor
 	MAX_THREADS = 1
@@ -65,8 +65,21 @@ class Config:
 	ONLY_TEST = True
 	# Minimum amount of free memory to activate the exponential backoff.
 	MIN_FREE_MEMORY = 20000
-	
-logging.config.fileConfig(Config.CVEM_PATH + '/logging.conf')
+	# Command to change the memory of a VM, parameters:
+	#  {hostname}: hostname where the VM is allocated
+	#  {vmid}: ID of the VM
+	#  {newmemory}: Amount of memory to assign to the VM
+	CHANGE_MEMORY_CMD = "virsh -c 'qemu+ssh://{hostname}/system' setmem one-{vmid} {newmemory}"
+	# Class child of cvem Monitor to be executed
+	MONITOR_CLASS = 'connectors.one.OpenNebula.MonitorONE'
+
+try:
+	# First try locally
+	logging.config.fileConfig(Config.CVEM_PATH + '/logging.conf')
+except:
+	# then try in the /etc/cvem directory
+	logging.config.fileConfig('/etc/cvem/logging.conf')
+
 logger = logging.getLogger('monitor')
 
 config = ConfigParser.ConfigParser()

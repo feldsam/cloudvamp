@@ -13,6 +13,9 @@
 # Original file                                                              #
 # Copyright 2002-2015, OpenNebula Project, OpenNebula Systems                #
 #                                                                            #
+# CloudVAMP modifications                                                    #
+# Copyright 2015, Universitat Politecnica de Valencia                        #
+#                                                                            #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may    #
 # not use this file except in compliance with the License. You may obtain    #
 # a copy of the License at                                                   #
@@ -91,6 +94,7 @@ module KVM
         values[:state]        = get_state(dominfo['State'])
         values[:cpu]          = cpu[vm[:pid]] if cpu[vm[:pid]]
         values[:memory]       = [resident_mem, used_mem].max
+        values[:realmemory] = used_mem
         values[:maxmemory]    = [resident_mem, max_mem].max
         values[:packedmemory] = values[:maxmemory] - values[:memory]
 
@@ -152,6 +156,7 @@ module KVM
             values[:state]        = get_state(dominfo['State'])
             values[:cpu]          = cpu[vm[:pid]] if cpu[vm[:pid]]
             values[:memory]       = [resident_mem, used_mem].max
+            values[:realmemory] = used_mem
             values[:maxmemory]    = [resident_mem, max_mem].max
             values[:packedmemory] = values[:maxmemory] - values[:memory]
 
@@ -322,6 +327,8 @@ module KVM
         case state.gsub('-', '')
             when *%w{running blocked shutdown dying idle paused}
                 'a'
+            when 'paused'
+                'd'
             when 'crashed'
                 'e'
             else
@@ -684,6 +691,8 @@ module XEN
         case state.gsub('-', '')[-1..-1]
         when *%w{r b s d p}
             'a'
+        when 'p'
+            'd'
         when 'c'
             'e'
         else
@@ -785,6 +794,8 @@ def setup_hypervisor
         case $0
             when %r{/vmm\/kvm/}
                 hypervisor=KVM
+            when %r{/vmm\/cloudvamp/}
+                hypervisor=KVM
             when %r{/vmm\/xen\d?/}
                 hypervisor=XEN
         end
@@ -863,6 +874,7 @@ end
 
 def print_all_vm_info(hypervisor)
     require 'yaml'
+    require 'base64'
     require 'zlib'
 
     vms = hypervisor.get_all_vm_info
